@@ -1,0 +1,42 @@
+import java.util.Arrays;
+import java.util.Random;
+
+public class SortApplication {
+
+    public static void main(String[] args) {
+        // Example array of Comparable objects (e.g., integers, strings)
+    	int size = 10000;
+        Integer[] array = generateRandomArray(size);
+
+        benchmarkSort(array.clone(), "Bubble Sort", SortUtils::bubbleSort);
+        benchmarkSort(array.clone(), "Insertion Sort", SortUtils::insertionSort);
+        benchmarkSort(array.clone(), "Selection Sort", SortUtils::selectionSort);
+        benchmarkSort(array.clone(), "Merge Sort", SortUtils::mergeSort);
+        benchmarkSort(array.clone(), "Quick Sort", SortUtils::quickSort);
+        benchmarkSort(array.clone(), "Heap Sort", SortUtils::heapSort);
+    }
+    
+    private static Integer[] generateRandomArray(int size) {
+        Random random = new Random();
+        Integer[] array = new Integer[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = random.nextInt(100000); // Random integers from 0 to 99999
+        }
+        return array;
+    }
+
+    private static <T extends Comparable<T>> void benchmarkSort(T[] array, String sortName, SortAlgorithm<T> sortMethod) {
+        long startTime = System.currentTimeMillis();
+        sortMethod.sort(array);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println(sortName + " took " + (endTime - startTime) + " milliseconds.");
+        System.out.println("Sorted Array: " + Arrays.toString(array));
+    }
+
+    // Functional interface for sorting algorithms
+    @FunctionalInterface
+    interface SortAlgorithm<T> {
+        void sort(T[] array);
+    }
+}

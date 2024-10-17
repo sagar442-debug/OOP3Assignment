@@ -1,0 +1,131 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class SortApplication {
+
+    public static void main(String[] args) {
+        String fileName = null;
+        String sortType = "bubble";
+        String compareType = "height";
+
+        // Parse command-line arguments
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equalsIgnoreCase("-f")) {
+                fileName = args[++i];
+            } else if (args[i].equalsIgnoreCase("-t")) {
+                compareType = args[++i];
+            } else if (args[i].equalsIgnoreCase("-s")) {
+                sortType = args[++i];
+            }
+        }
+
+        if (fileName == null) {
+            System.out.println("Error: No input file provided. Use -f option to specify the file.");
+            return;
+        }
+
+        try {
+            Shape[] shapes = readShapesFromFile(fileName);
+            benchmarkSort(shapes, sortType);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + fileName);
+        }
+    }
+
+    private static Shape[] readShapesFromFile(String fileName) throws FileNotFoundException {
+        // Implementation for reading file and creating shape objects
+        // For brevity, not fully implemented here
+    	private static Shape[] readShapesFromFile(String fileName) throws FileNotFoundException {
+            File file = new File(fileName);
+            Scanner scanner = new Scanner(file);
+
+            // Read the number of shapes from the first line
+            int numberOfShapes = scanner.nextInt();
+            scanner.nextLine(); // Move to the next line
+
+            Shape[] shapes = new Shape[numberOfShapes];
+
+            // Iterate over the remaining lines to create shape objects
+            for (int i = 0; i < numberOfShapes; i++) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(" ");
+
+                // Determine the type of shape and create the corresponding object
+                String shapeType = parts[0];
+                double height = Double.parseDouble(parts[1]);
+                double dimension = Double.parseDouble(parts[2]);
+
+                switch (shapeType.toLowerCase()) {
+                    case "cylinder":
+                        shapes[i] = new Cylinder(height, dimension); // dimension is radius
+                        break;
+
+                    case "cone":
+                        shapes[i] = new Cone(height, dimension); // dimension is radius
+                        break;
+
+                    case "pyramid":
+                        shapes[i] = new Pyramid(height, dimension); // dimension is side length
+                        break;
+
+                    case "squareprism":
+                        shapes[i] = new SquarePrism(height, dimension); // dimension is side length
+                        break;
+
+                    case "triangularprism":
+                        shapes[i] = new TriangularPrism(height, dimension); // dimension is side length
+                        break;
+
+                    case "pentagonalprism":
+                        shapes[i] = new PentagonalPrism(height, dimension); // dimension is side length
+                        break;
+
+                    case "octagonalprism":
+                        shapes[i] = new OctagonalPrism(height, dimension); // dimension is side length
+                        break;
+
+                    default:
+                        System.out.println("Unknown shape type: " + shapeType);
+                        break;
+                }
+            }
+
+            scanner.close();
+            return shapes;
+        }
+    }
+
+    private static void benchmarkSort(Shape[] shapes, String sortType) {
+        long startTime = System.currentTimeMillis();
+        switch (sortType.toLowerCase()) {
+            case "bubble":
+                SortUtils.bubbleSort(shapes);
+                break;
+            case "insertion":
+                SortUtils.insertionSort(shapes);
+                break;
+            case "selection":
+                SortUtils.selectionSort(shapes);
+                break;
+            case "merge":
+                SortUtils.mergeSort(shapes);
+                break;
+            case "quick":
+                SortUtils.quickSort(shapes);
+                break;
+            case "heap":
+                SortUtils.heapSort(shapes);
+                break;
+            default:
+                System.out.println("Error: Invalid sorting algorithm specified.");
+                return;
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println(sortType + " sort took " + (endTime - startTime) + " milliseconds");
+
+        // Display sorted shapes.
+        System.out.println("First shape: " + shapes[0]);
+        System.out.println("Last shape: " + shapes[shapes.length - 1]);
+    }
+}

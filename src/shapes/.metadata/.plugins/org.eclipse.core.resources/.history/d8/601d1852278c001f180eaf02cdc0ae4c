@@ -1,0 +1,73 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class SortApplication {
+
+    public static void main(String[] args) {
+        String fileName = null;
+        String sortType = "bubble";
+        String compareType = "height";
+
+        // Parse command-line arguments
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equalsIgnoreCase("-f")) {
+                fileName = args[++i];
+            } else if (args[i].equalsIgnoreCase("-t")) {
+                compareType = args[++i];
+            } else if (args[i].equalsIgnoreCase("-s")) {
+                sortType = args[++i];
+            }
+        }
+
+        if (fileName == null) {
+            System.out.println("Error: No input file provided. Use -f option to specify the file.");
+            return;
+        }
+
+        try {
+            Shape[] shapes = readShapesFromFile(fileName);
+            benchmarkSort(shapes, sortType);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + fileName);
+        }
+    }
+
+    private static Shape[] readShapesFromFile(String fileName) throws FileNotFoundException {
+        // Implementation for reading file and creating shape objects
+        // For brevity, not fully implemented here
+    }
+
+    private static void benchmarkSort(Shape[] shapes, String sortType) {
+        long startTime = System.currentTimeMillis();
+        switch (sortType.toLowerCase()) {
+            case "bubble":
+                SortUtils.bubbleSort(shapes);
+                break;
+            case "insertion":
+                SortUtils.insertionSort(shapes);
+                break;
+            case "selection":
+                SortUtils.selectionSort(shapes);
+                break;
+            case "merge":
+                SortUtils.mergeSort(shapes);
+                break;
+            case "quick":
+                SortUtils.quickSort(shapes);
+                break;
+            case "heap":
+                SortUtils.heapSort(shapes);
+                break;
+            default:
+                System.out.println("Error: Invalid sorting algorithm specified.");
+                return;
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println(sortType + " sort took " + (endTime - startTime) + " milliseconds");
+
+        // Display sorted shapes.
+        System.out.println("First shape: " + shapes[0]);
+        System.out.println("Last shape: " + shapes[shapes.length - 1]);
+    }
+}

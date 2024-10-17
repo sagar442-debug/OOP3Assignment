@@ -1,0 +1,31 @@
+import java.util.Arrays;
+
+public class SortApplication {
+
+    public static void main(String[] args) {
+        // Example array of Comparable objects (e.g., integers, strings)
+        Integer[] array = {5, 3, 8, 4, 2, 7, 1, 9, 6};
+
+        benchmarkSort(array.clone(), "Bubble Sort", SortUtils::bubbleSort);
+        benchmarkSort(array.clone(), "Insertion Sort", SortUtils::insertionSort);
+        benchmarkSort(array.clone(), "Selection Sort", SortUtils::selectionSort);
+        benchmarkSort(array.clone(), "Merge Sort", SortUtils::mergeSort);
+        benchmarkSort(array.clone(), "Quick Sort", SortUtils::quickSort);
+        benchmarkSort(array.clone(), "Heap Sort", SortUtils::heapSort);
+    }
+
+    private static <T extends Comparable<T>> void benchmarkSort(T[] array, String sortName, SortAlgorithm<T> sortMethod) {
+        long startTime = System.currentTimeMillis();
+        sortMethod.sort(array);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println(sortName + " took " + (endTime - startTime) + " milliseconds.");
+        System.out.println("Sorted Array: " + Arrays.toString(array));
+    }
+
+    // Functional interface for sorting algorithms
+    @FunctionalInterface
+    interface SortAlgorithm<T> {
+        void sort(T[] array);
+    }
+}

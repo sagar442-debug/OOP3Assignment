@@ -1,0 +1,17 @@
+// Shape.java
+public abstract class Shape implements Comparable<Shape> {
+    protected double height;
+
+    public double getHeight() {
+        return height;
+    }
+
+    // Abstract methods for volume and base area calculations.
+    public abstract double calcVolume();
+    public abstract double calcBaseArea();
+
+    @Override
+    public int compareTo(Shape other) {
+        return Double.compare(this.height, other.getHeight());
+    }
+}
